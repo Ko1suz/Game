@@ -1,24 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class AlanAcıcı : MonoBehaviour
 {
     GameManager gm;
-    public Slider slider;
     public GameObject yeniAlan;
     public GameObject duvar;
-    public bool playerisIn;
-    public float mevcutToplananPara = 0;
-    public float alanAcmaUcreti = 5f;
+    public float alanAcmaSuresi = 5f;
     public float varsayılanAlanAcmaSuresi;
     // Start is called before the first frame update
     void Start()
     {
-        slider.value = mevcutToplananPara;
-        slider.maxValue = alanAcmaUcreti;
-        varsayılanAlanAcmaSuresi = alanAcmaUcreti;
+        varsayılanAlanAcmaSuresi = alanAcmaSuresi;
         gm = GameObject.FindGameObjectWithTag("GM").GetComponent<GameManager>();
     }
 
@@ -27,19 +21,11 @@ public class AlanAcıcı : MonoBehaviour
         AlanAc();
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.tag == "Player")
         {
-            playerisIn = true;
-            // StartCoroutine(AlanAcma());
-        }
-    }
-
-    private void OnTriggerExit(Collider other) {
-        if (other.gameObject.tag == "Player")
-        {
-            playerisIn = false;
+            alanAcmaSuresi -= Time.deltaTime;
             // StartCoroutine(AlanAcma());
         }
     }
@@ -54,7 +40,7 @@ public class AlanAcıcı : MonoBehaviour
 
     void AlanAc()
     {
-        if (gm.money >= 150 && mevcutToplananPara >= alanAcmaUcreti)
+        if (gm.money >= 150 && alanAcmaSuresi <= 0)
         {
             if (duvar == null)
             {
@@ -71,7 +57,7 @@ public class AlanAcıcı : MonoBehaviour
         }
         else if (gm.money < 150)
         {
-            alanAcmaUcreti = varsayılanAlanAcmaSuresi;
+            alanAcmaSuresi = varsayılanAlanAcmaSuresi;
         }
 
     }
