@@ -8,10 +8,11 @@ public class Collector : MonoBehaviour
 {
     [Header("Ref")]
     public Transform[] boxHolderTransform;
+    // public Transform activetedTransform;
+    public float activeDistence = 10;
 
     public List<GameObject> boxs = new List<GameObject>();
     public ProductionMachine productionMachine;
-    public bool exit = false;
     public bool playerIn = false;
     public float giveBoxTime = 0.1f;
     int FloorItemHolding = 0;
@@ -22,11 +23,14 @@ public class Collector : MonoBehaviour
     public Vector3 offset;
     public Vector3 verticalOffset;
     PlayerCollector playerCollector;
+    GameManager gm;
 
 
 
     private void Start()
     {
+        gm = GameObject.FindGameObjectWithTag("GM").GetComponent<GameManager>();
+        playerCollector = gm.PlayerTransform.gameObject.GetComponent<PlayerCollector>();
         StartCoroutine(RemoveBoxess());
     }
     private void Update()
@@ -62,19 +66,16 @@ public class Collector : MonoBehaviour
             }
 
         );
-
-
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            exit = false;
-            playerIn = true;
-            playerCollector = other.gameObject.GetComponent<PlayerCollector>();
-        }
-    }
+    // private void OnTriggerEnter(Collider other)
+    // {
+    //     if (other.gameObject.CompareTag("Player"))
+    //     {
+    //         playerIn = true;
+    //         playerCollector = other.gameObject.GetComponent<PlayerCollector>();
+    //     }
+    // }
 
     private void OnTriggerExit(Collider other)
     {
@@ -90,7 +91,7 @@ public class Collector : MonoBehaviour
         {
             yield return new WaitForSeconds(giveBoxTime);
             // PlayerCollector _collector = collector;
-            if (playerIn)
+            if (PlayerDistance()<=activeDistence)
             {
                 if (numOfItemsHolding > 0)
                 {
@@ -120,6 +121,11 @@ public class Collector : MonoBehaviour
             }
 
         }
+    }
+    float PlayerDistance()
+    {
+        float targetDistance = Vector3.Distance(transform.position+ new Vector3(0,-0.8f,0),gm.PlayerTransform.position);
+        return targetDistance;
     }
 
 

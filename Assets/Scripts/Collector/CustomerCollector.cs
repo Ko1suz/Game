@@ -135,8 +135,8 @@ public class CustomerCollector : MonoBehaviour
                         }
                         else
                         {
-                            Debug.Log("son item" + (boxs.Count - 1));
-                            Debug.Log("item ismi" + boxs[boxs.Count - 1].name);
+                            // Debug.Log("son item" + (boxs.Count - 1));
+                            // Debug.Log("item ismi" + boxs[boxs.Count - 1].name);
                             _collector.numOfItemsHolding++;
                             _collector.AddNewItem(boxs[boxs.Count - 1].transform);
                             boxs.Remove(boxs[boxs.Count - 1]);

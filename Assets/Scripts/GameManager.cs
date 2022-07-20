@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager gm;
+    public Transform PlayerTransform;
     public float money = 0;
     public Animator moneyImageAnim;
     public ParticleSystem moneyParticles;
