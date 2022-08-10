@@ -7,7 +7,7 @@ using System.Linq;
 public class CustomerCollector : MonoBehaviour
 {
 
-
+    public string Tier = "1";
     [Header("Ref")]
     public Transform[] boxHolderTransform;
 
@@ -22,9 +22,11 @@ public class CustomerCollector : MonoBehaviour
     public bool itemHoldFull = false;
     public Vector3 offset;
     public Vector3 verticalOffset;
+    UpgradeStats upgradeStats;
 
     private void Start()
     {
+        upgradeStats = UpgradeStats.instance;
         StartCoroutine(RemoveBoxes());
     }
     public void AddNewItem(Transform _itemToAdd)
@@ -61,12 +63,45 @@ public class CustomerCollector : MonoBehaviour
         }
         else if (_itemType.type == "TahtaKutu")
         {
-            _itemType.transform.localScale = new Vector3(0.836411119f,0.333999991f,0.273574203f);
+            _itemType.transform.localScale = new Vector3(0.836411119f, 0.333999991f, 0.273574203f);
+        }
+        else if (_itemType.type == "Varil")
+        {
+            _itemType.transform.localScale = new Vector3(1, 0.24000001f, 0.333333343f);
+        }
+        else if (_itemType.type == "Elektronik")
+        {
+            _itemType.transform.localScale = new Vector3(0.465000008f,0.450000006f,0.145000001f);
         }
     }
 
     private void Update()
     {
+        if (Tier == "1")
+        {
+            maxItemHold = upgradeStats.Palet1UrunTutmaSayisi;
+        }
+        else if (Tier == "2")
+        {
+            maxItemHold = upgradeStats.TierIkiUrunTutmaSayısı;
+        }
+        else if (Tier == "3")
+        {
+            maxItemHold = upgradeStats.Palet3UrunTutmaSayisi;
+        }
+        else if (Tier == "4")
+        {
+            maxItemHold = upgradeStats.Palet4UrunTutmaSayisi;
+        }
+        else if (Tier == "5")
+        {
+            maxItemHold = upgradeStats.Palet5UrunTutmaSayisi;
+        }
+        else if (Tier == "6")
+        {
+            maxItemHold = upgradeStats.Palet6UrunTutmaSayisi;
+        }
+
         if (numOfItemsHolding >= maxItemHold)
         {
             itemHoldFull = true;
@@ -112,7 +147,7 @@ public class CustomerCollector : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSecondsRealtime(.6f);
+            yield return new WaitForSecondsRealtime(.4f);
             CustomerCarCollector _collector = customerCarCollector;
             if (CustomerIsIn && !_collector.itemHoldFull && _collector.GetComponent<Car_AI>().isOpen)
             {

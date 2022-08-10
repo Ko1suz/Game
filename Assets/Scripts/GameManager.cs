@@ -9,9 +9,10 @@ public class GameManager : MonoBehaviour
     public float money = 0;
     public Animator moneyImageAnim;
     public ParticleSystem moneyParticles;
+    public int paraDegeri = 10;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         // SetAnimFalse();
         gm = GetComponent<GameManager>();
@@ -30,7 +31,7 @@ public class GameManager : MonoBehaviour
 
     public void AddMoney()
     {
-        money +=50;
+        money +=paraDegeri;
         moneyImageAnim.SetBool("MoneyAddAnim",true);
     }
 

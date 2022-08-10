@@ -852,8 +852,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 6.6426077, y: 2.6873295, z: 3.100957}
-  m_Center: {x: 0, y: 1.6616687, z: -0.00000071525574}
+  m_Size: {x: 8.014975, y: 2.6873295, z: 3.100957}
+  m_Center: {x: 0.6861832, y: 1.6616687, z: -0.00000071525574}
 --- !u!114 &64639516641974835
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -866,11 +866,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e98e17c002a3078428e78bc8f62bac1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
+  speed: 0.5
   isOpen: 0
   leaving: 0
   customerCollector: {fileID: 0}
   moneyHolder: {fileID: 0}
+  parkPoint: {fileID: 0}
+  moneyPrefab: {fileID: 6434500380358986821, guid: c56aa03b63ad0f44c87b7d431ca1f71d, type: 3}
 --- !u!95 &5498728634073370382
 Animator:
   serializedVersion: 3
@@ -902,12 +904,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05a453ad505ee614d8d2a2e32b0e9c02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: Van
   boxHolderTransform:
   - {fileID: 64639516484240217}
   - {fileID: 64639517421981036}
   boxs: []
   car_AI: {fileID: 0}
   numOfItemsHolding: 0
+  maxItemHold: 6
   itemHoldFull: 0
   offset: {x: 0, y: 0, z: 0}
   verticalOffset: {x: 0, y: 0, z: 0}

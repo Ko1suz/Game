@@ -16,11 +16,13 @@ public class PlayerCollector : MonoBehaviour
     public Vector3 offset;
     public Vector3 verticalOffset;
     public CustomerCollector collector;
+    PlayerStats playerStats;
 
 
 
     private void Start()
     {
+        playerStats = PlayerStats.instance;
         StartCoroutine(RemoveBoxes());
     }
 
@@ -73,7 +75,7 @@ public class PlayerCollector : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSecondsRealtime(giveBoxTime);
+            yield return new WaitForSecondsRealtime(playerStats.urunToplamaVeVermeHizi);
             CustomerCollector _collector = collector;
             if (_collector.PlayerIsIn && !_collector.itemHoldFull)
             {

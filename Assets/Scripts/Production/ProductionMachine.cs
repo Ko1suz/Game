@@ -4,66 +4,44 @@ using UnityEngine;
 
 public class ProductionMachine : MonoBehaviour
 {
+    public string Tier = "1";
     public GameObject product;
     public Transform productSpawnPoint;
-
     public Collector Palet;
     public int productValue = 0;
-
-    public bool stopSpawning = false;
     public float productionDelay = 2;
-    public bool boxSpawned = false;
-    // public float spawnTime;
-    // public float spawnDelay;
-
-
+    UpgradeStats upgradeStats;
+    
     private void Start()
     {
-        // InvokeRepeating("CreateProduct",spawnTime,spawnDelay);
+        upgradeStats = UpgradeStats.instance;
         StartCoroutine(CreateProduct());
-
     }
-    // IEnumerator ProductionTimer()
-    // {
-    //     yield return new WaitForSeconds(1f);
-    //     CreateProduct();
-    //     StopAllCoroutines();
-    //     StartCoroutine(ProductionTimer());
-    // }
-
-    private void Update()
-    {
-
-    }
-
-    private void FixedUpdate()
-    {
-
-    }
-
-
-    // void StopProduct()
-    // {
-    //     if (Palet.StopProduction)
-    //     {
-    //         CancelInvoke("CreateProduct");
-    //     }
-    // }
-
-    // void CreateProduct()
-    // {
-    //     Instantiate(product, productSpawnPoint.position, productSpawnPoint.rotation);
-    //     if (stopSpawning)
-    //     {
-    //         CancelInvoke("CreateProduct");
-    //     }
-    // }
-
     IEnumerator CreateProduct()
     {
         while (true)
         {
-            yield return new WaitForSecondsRealtime(productionDelay);
+            if (Tier=="1")
+            {
+                yield return new WaitForSecondsRealtime(upgradeStats.TierBirUretimBandiDelayi);
+            }
+            else if (Tier=="2")
+            {
+                yield return new WaitForSecondsRealtime(upgradeStats.TierIkiUretimBandiDelayi);
+            }
+            else if (Tier=="3")
+            {
+                yield return new WaitForSecondsRealtime(upgradeStats.TierUcUretimBandiDelayi);
+            }
+            else if (Tier=="4")
+            {
+                yield return new WaitForSecondsRealtime(upgradeStats.TierDortUretimBandiDelayi);
+            }
+            else
+            {
+                yield return null;
+            }
+            
             if (Palet.StopProduction)
             {
                 yield return null;
@@ -75,4 +53,5 @@ public class ProductionMachine : MonoBehaviour
             }   
         }
     }
+
 }

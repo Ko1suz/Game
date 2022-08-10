@@ -13,10 +13,10 @@ public class Car_AI : MonoBehaviour
     public MoneyHolder moneyHolder;
     public Transform parkPoint;
     public GameObject moneyPrefab;
+    UpgradeStats upgradeStats;
     private void Start()
     {
-        // customerCollector = GameObject.FindGameObjectWithTag("CustomerPoint").GetComponentInChildren<CustomerCollector>();
-        // moneyHolder = GameObject.FindGameObjectWithTag("CustomerPoint").GetComponentInChildren<MoneyHolder>();
+        upgradeStats = UpgradeStats.instance;
         customerCarCollector = GetComponent<CustomerCarCollector>();
         animator = GetComponent<Animator>();
     }
@@ -27,39 +27,58 @@ public class Car_AI : MonoBehaviour
         ParkingState();
         if (leaving)
         {
-            transform.position += Vector3.forward * -speed / 10;
+            if (customerCarCollector.type == "Boat")
+            {
+                transform.position += Vector3.forward * upgradeStats.MusteriAracizi / 10;
+
+            }
+            else
+            {
+                transform.position += Vector3.forward * -upgradeStats.MusteriAracizi / 10;
+            }
+
         }
     }
 
-    void Parking()
-    {
-        if (!customerCollector.CustomerIsIn && !customerCarCollector.itemHoldFull)
-        {
-            Debug.Log("Hareket edıyormuyum");
-            transform.position += Vector3.forward * speed / 10;
-        }
-        else
-        {
-            // var a = Quaternion.Euler(0, leftDoorOffset, 0);
-            // var b = Quaternion.Euler(0, -rightDoorOffset, 0);
-            // doorLeft.transform.rotation = Quaternion.Lerp(doorLeft.transform.rotation, a, doorOpenSpeed * Time.deltaTime);
-            // doorRight.transform.rotation = Quaternion.Lerp(doorRight.transform.rotation, b, doorOpenSpeed * Time.deltaTime);
-            animator.SetBool("KapıAnahtar", true);
-            return;
-        }
-    }
+
 
     void ParkingState()
     {
-        if (this.transform.position.z < parkPoint.transform.position.z && !leaving)
+        if (customerCarCollector.type == "Boat")
         {
-            transform.position += Vector3.forward * speed / 10;
+            if (this.transform.position.z > parkPoint.transform.position.z && !leaving)
+            {
+                transform.position += Vector3.forward * -upgradeStats.MusteriAracizi / 10;
+            }
+            else
+            {
+                animator.SetTrigger("DoorOpen");
+            }
+            return;
         }
         else
         {
-            animator.SetBool("KapıAnahtar", true);
-            return;
+            if (this.transform.position.z < parkPoint.transform.position.z && !leaving)
+            {
+                transform.position += Vector3.forward * upgradeStats.MusteriAracizi / 10;
+            }
+            else
+            {
+                if (customerCarCollector.type == "Van")
+                {
+                    animator.SetBool("KapıAnahtar", true);
+                }
+                else if (customerCarCollector.type == "Truck")
+                {
+                    animator.SetBool("DoorOpen", true);
+                }
+                return;
+            }
         }
+
+
+
+
     }
 
     void Leaving()
@@ -69,6 +88,8 @@ public class Car_AI : MonoBehaviour
     }
     int kartonKutuSayısı;
     int tahtaKutuSayısı;
+    int varilSayisi;
+    int elektronikSayisi;
     int toplamUretilenPara;
     void Paying()
     {
@@ -82,8 +103,17 @@ public class Car_AI : MonoBehaviour
             {
                 tahtaKutuSayısı++;
             }
+            else if (customerCarCollector.boxs[i].GetComponent<ItemControl>().type == "Varil")
+            {
+                varilSayisi++;
+            }
+            else if (customerCarCollector.boxs[i].GetComponent<ItemControl>().type == "Elektronik")
+            {
+                elektronikSayisi++;
+            }
+
         }
-        toplamUretilenPara = (tahtaKutuSayısı*2)+kartonKutuSayısı;
+        toplamUretilenPara = (elektronikSayisi * 6) + (varilSayisi * 4) + (tahtaKutuSayısı * 2) + kartonKutuSayısı;
         for (int i = 0; i < toplamUretilenPara; i++)
         {
             GameObject money = Instantiate(moneyPrefab, transform.position, moneyPrefab.transform.rotation);
@@ -93,6 +123,8 @@ public class Car_AI : MonoBehaviour
         }
         kartonKutuSayısı = 0;
         tahtaKutuSayısı = 0;
+        varilSayisi = 0;
+        elektronikSayisi = 0;
     }
 
 

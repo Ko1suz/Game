@@ -10,6 +10,9 @@ TagManager:
   - GM
   - CustomerPoint
   - UretimPaleti
+  - HoleCollector
+  - UzakUretimPaleti
+  - Hook
   layers:
   - Default
   - TransparentFX

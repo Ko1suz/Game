@@ -12,10 +12,11 @@ public class YeniAlanAcici : MonoBehaviour
     public Slider slider;
     public Gradient gradient;
     public GameObject yeniAlan;
-    public GameObject duvar;
+    public GameObject Yol;
     public float aktifEtmeSuresi = 0.5f;
     public float alanAcmaUcreti;
     public float mevcutPara = 0;
+    bool Exit = false;
 
 
     private void Start()
@@ -34,16 +35,19 @@ public class YeniAlanAcici : MonoBehaviour
             AlanAc();
         }
     }
-    IEnumerator AktifEt()
+
+    IEnumerator StartDelay()
     {
-        while (true)
+        yield return new WaitForSeconds(0.5f);
+        if (Exit)
         {
-            yield return new WaitForSeconds(aktifEtmeSuresi);
-            if (playerIsIn)
-            {
-                AlanAc();
-            }
+            yield return null;
         }
+        else
+        {
+            playerIsIn = true;
+        }
+        
     }
 
     float a;
@@ -57,7 +61,7 @@ public class YeniAlanAcici : MonoBehaviour
             takeMoney();
             if (mevcutPara >= alanAcmaUcreti)
             {
-                if (duvar == null)
+                if (Yol == null)
                 {
                     yeniAlan.SetActive(true);
                     Destroy(this.gameObject);
@@ -65,7 +69,7 @@ public class YeniAlanAcici : MonoBehaviour
                 else
                 {
                     yeniAlan.SetActive(true);
-                    duvar.SetActive(false);
+                    Yol.SetActive(false);
                     Destroy(this.gameObject);
                 }
             }
@@ -75,12 +79,12 @@ public class YeniAlanAcici : MonoBehaviour
 
     void takeMoney()
     {
-        if (alanAcmaUcreti <= 3000)
+        if (alanAcmaUcreti <= 2000)
         {
             mevcutPara += 5;
             gm.money -= 5;
         }
-        else if(alanAcmaUcreti>3000 && alanAcmaUcreti<=10000)
+        else if(alanAcmaUcreti>2000 && alanAcmaUcreti<=10000)
         {
             mevcutPara += 25;
             gm.money -= 25;
@@ -105,7 +109,9 @@ public class YeniAlanAcici : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            playerIsIn = true;
+            // playerIsIn = true;
+            StartCoroutine(StartDelay());
+            Exit = false;
         }
     }
 
@@ -114,6 +120,7 @@ public class YeniAlanAcici : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             playerIsIn = false;
+            Exit = true;
         }
     }
 

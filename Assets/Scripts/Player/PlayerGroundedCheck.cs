@@ -13,7 +13,7 @@ public class PlayerGroundedCheck : MonoBehaviour
 
     void Check()
     {
-        if (transform.position.y < -0.05f)
+        if (transform.position.y < -9.5f)
         {
             transform.position = new Vector3(0, 0, 0);
         }
